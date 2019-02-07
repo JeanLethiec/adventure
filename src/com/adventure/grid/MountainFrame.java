@@ -1,5 +1,9 @@
 package com.adventure.grid;
 
-public class MountainFrame {
+public class MountainFrame extends Frame {
+
+	public MountainFrame(Coordinates xy) {
+		super(xy);
+	}
 
 }

@@ -1,5 +1,9 @@
 package com.adventure.grid;
 
-public class TreasureFrame {
+public class TreasureFrame extends Frame {
 
+	public TreasureFrame(Coordinates xy) {
+		super(xy);
+	}
+	
 }

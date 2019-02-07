@@ -1,6 +1,6 @@
 package com.adventure.grid;
 
-public class Frame {
+public abstract class Frame {
 	private Coordinates xy;
 	
 	public Frame(Coordinates iXY) {
