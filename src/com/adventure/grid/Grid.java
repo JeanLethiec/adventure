@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
+import com.adventure.adventurer.Adventurer;
 import com.adventure.configuration.ConfigurationException;
 import com.adventure.configuration.ConfigurationParser;
 
@@ -50,7 +51,7 @@ public class Grid {
 			int y = 0;
 			while (y < height) {
 				//logger.trace("Working on X" + x + " ; Y" + y);
-				addFrame(new StandardFrame(new Coordinates(x, y)));
+				frames.add(new StandardFrame(new Coordinates(x, y)));
 				y++;
 			}
 			x++;
@@ -89,25 +90,47 @@ public class Grid {
 		this.frames = frames;
 	}
 	
-	private void addFrame(Frame frame) {
-		this.frames.add(frame);
-	}
-	
-	private void replaceFrame(Coordinates xy, Frame newFrame) throws ConfigurationException {
+	// TODO: Optimize the retrieval of the frame
+	private Frame getFrame(Coordinates xy) throws GridException {
 		List<Frame> correspondingFrames = getFrames().stream().filter(x -> x.getXy().compareTo(xy) == 0).collect(Collectors.toList());
 		
 		if (correspondingFrames.isEmpty()) {
-			throw new ConfigurationException("Trying to replace a non-existent frame: " + xy.toString());
+			throw new GridException("Trying to access a non-existent frame: " + xy);
+		} else if (correspondingFrames.size() > 1) {
+			throw new GridException("The grid has two frames with the same coordinates: " + xy);
 		}
+		
+		return correspondingFrames.get(0);
 	}
 	
-	public void addMountain(Coordinates xy) throws ConfigurationException {
+	private void replaceFrame(Coordinates xy, Frame newFrame) throws ConfigurationException, GridException {
+		frames.set(frames.indexOf(getFrame(xy)), newFrame);
+	}
+	
+	public void addMountain(Coordinates xy) throws ConfigurationException, GridException {
 		MountainFrame mountain = new MountainFrame(xy);
 		replaceFrame(xy, mountain);
 	}
 	
-	public void addTreasure(Coordinates xy) throws ConfigurationException {
+	public List<MountainFrame> getMountains() {
+		return getFrames().stream().filter(x -> x instanceof MountainFrame).collect(Collectors.toList()).stream().map(x -> (MountainFrame) x).collect(Collectors.toList());
+	}
+	
+	public void addTreasure(Coordinates xy) throws ConfigurationException, GridException {
 		TreasureFrame treasure = new TreasureFrame(xy);
 		replaceFrame(xy, treasure);
+	}
+	
+	public List<TreasureFrame> getTreasures() {
+		return getFrames().stream().filter(x -> x instanceof TreasureFrame).collect(Collectors.toList()).stream().map(x -> (TreasureFrame) x).collect(Collectors.toList());
+	}
+	
+	public void addAdventurer(Adventurer adventurer, Coordinates xy) throws GridException {	
+		Frame frame = getFrame(xy);
+		if (frame instanceof Adventurable) {
+			((Adventurable) frame).addAdventurer();
+		} else {
+			throw new GridException("Cannot add an adventurer on a Mountain frame.");
+		}
 	}
 }

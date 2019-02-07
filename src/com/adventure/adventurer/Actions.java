@@ -1,6 +1,6 @@
 package com.adventure.adventurer;
 
-public enum Action {
+public enum Actions {
 	A,
 	G,
 	D

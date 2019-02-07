@@ -13,6 +13,9 @@ import org.apache.log4j.Logger;
 
 import com.adventure.configuration.ConfigurationException;
 import com.adventure.configuration.ConfigurationParser;
+import com.adventure.grid.Grid;
+import com.adventure.grid.MountainFrame;
+import com.adventure.grid.TreasureFrame;
 
 import junit.framework.TestCase;
 
@@ -25,72 +28,83 @@ public class ConfigurationTest extends TestCase {
 	
 	private static Logger logger = Logger.getLogger(ConfigurationTest.class);
 	
-	private List<String> standardContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA");
+	private List<String> standardContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA");
 	
 	private List<List<String>> badContents = new LinkedList<List<String>>() {{
 		// On Grid
-		add(Arrays.asList(                              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 0 - 0"    ,              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("B - 3 - 4"    ,              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3Y - 4"   ,              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4X"   ,              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3"        ,              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4 - 2",              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4"    , "C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
+		add(Arrays.asList(                              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 0 - 0"    ,              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("B - 3 - 4"    ,              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3Y - 4"   ,              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4X"   ,              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3"        ,              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4 - 2",              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4"    , "C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
 		
 		// On Mountains
-		add(Arrays.asList(                 "M - 1 - 1"     , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4"    , "B - 1 - 1"     , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4"    , "M - 1Y - 1"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 1Y"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4"    , "M - 1"         , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 1 - 1" , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4"    , "M - 50 - 1"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 50"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
+		add(Arrays.asList(                 "M - 1 - 1"     , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4"    , "B - 1 - 1"     , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4"    , "M - 1Y - 1"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 1Y"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4"    , "M - 1"         , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 1 - 1" , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4"    , "M - 50 - 1"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 50"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
 
 		// On Treasures
-		add(Arrays.asList(                                       "T - 0 - 3 - 2"    , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "B - 0 - 3 - 2"    , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0X - 3 - 2"   , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3X - 2"   , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2X"   , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3"        , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 40 - 3 - 2"   , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 40 - 2"   , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
+		add(Arrays.asList(                                       "T - 0 - 3 - 2"    , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "B - 0 - 3 - 2"    , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0X - 3 - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3X - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2X"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3"        , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 40 - 3 - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 40 - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
 		
 		// On Adventurers
-		add(Arrays.asList(                                                                         "A - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "B - Lara - 1 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1X - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1X - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - SD - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - PPMMOO"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA - X"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 40 - 1 - S - AADADAGGA"));
+		add(Arrays.asList(                                                                         "A - Lara - 1 - 2 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "B - Lara - 1 - 2 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1X - 2 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 2X - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 2 - SD - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 2 - S - PPMMOO"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 2 - S"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 2 - S - AADADAGGA - X"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 40 - 2 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 40 - S - AADADAGGA"));
 	}};
 	
-	public void testConfigurationParsing() throws Exception {
+	public void testBadConfigurationParsing() throws Exception {
 		for (List<String> badContent: badContents) {
 			try {
 				File configFile = generateConfigurationFile(badContent);
 				ConfigurationParser.parse(configFile);
 				fail();	
-			} catch (ConfigurationException e) {
+			} catch (Exception e) {
 				logger.debug("OK: " + e.getMessage());
 				continue;
 			}
 		}
-		
+	}
+	
+	public void testGoodConfigurationParsing() throws Exception {
+		Grid grid = null;
 		try {
 			File configFile = generateConfigurationFile(standardContent);
-			ConfigurationParser.parse(configFile);
+			grid = ConfigurationParser.parse(configFile);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.debug("KO: " + e.getMessage());
 			fail();
 		}
+		
+		List<MountainFrame> mountains = grid.getMountains();
+		assertEquals(mountains.size(), 3);
+		
+		List<TreasureFrame> treasures = grid.getTreasures();
+		assertEquals(treasures.size(), 2);
 	}
 	
 	public void testGenerateConfigurationFile() throws Exception {		

@@ -2,8 +2,10 @@ package com.adventure.configuration;
 
 import org.apache.log4j.Logger;
 
+import com.adventure.adventurer.Adventurer;
 import com.adventure.grid.Coordinates;
 import com.adventure.grid.Grid;
+import com.adventure.grid.GridException;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -19,7 +21,7 @@ public class ConfigurationParser {
 	
 	private static Logger logger = Logger.getLogger(ConfigurationParser.class);
 
-	public static Grid parse(File configFile) throws ConfigurationException {
+	public static Grid parse(File configFile) throws ConfigurationException, GridException {
 		
 		Grid grid = null;
 				
@@ -85,6 +87,8 @@ public class ConfigurationParser {
 						
 						String xt = arguments[1].trim();
 						String yt = arguments[2].trim();
+						String nb = arguments[3].trim();
+						// TODO: Implement number of treasures
 					
 						grid.addTreasure(new Coordinates(xt, yt));
 						break;
@@ -98,7 +102,15 @@ public class ConfigurationParser {
 							throw new ConfigurationException("Wrong number of arguments for Adventurer (A) settings (" + arguments.length + " instead of 6)");
 						}
 						
-						throw new NotImplementedException();
+						String name = arguments[1].trim();
+						String xa = arguments[2].trim();
+						String ya = arguments[3].trim();
+						String orientation = arguments[4].trim();
+						String actions = arguments[5].trim();
+						Adventurer adventurer = new Adventurer(name, orientation, actions);
+						
+						grid.addAdventurer(adventurer, new Coordinates(xa, ya));
+						break;
 				}
 			}
 		} catch (IOException e) {
