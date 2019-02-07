@@ -2,7 +2,11 @@ package com.adventure.configuration;
 
 import org.apache.log4j.Logger;
 
+import com.adventure.grid.Coordinates;
 import com.adventure.grid.Grid;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.io.BufferedReader;
 
 import java.io.File;
@@ -48,26 +52,53 @@ public class ConfigurationParser {
 							throw new ConfigurationException("Wrong number of arguments for Grid (C) settings (" + arguments.length + " instead of 3)");
 						}
 						
-						String x = arguments[1].trim();
-						logger.trace("X: " + x);
-						String y = arguments[2].trim();
-						logger.trace("Y: " + y);
+						String width = arguments[1].trim();
+						String height = arguments[2].trim();
 						
-						grid = new Grid(x, y);
+						grid = new Grid(width, height);
 						
 						break;
+						
 					case("M"):
 						if (grid == null) {
 							throw new ConfigurationException("Grid must be defined before any Mountains.");
 						}
+					
+						if (arguments.length != 3) {
+							throw new ConfigurationException("Wrong number of arguments for Mountain (M) settings (" + arguments.length + " instead of 3)");
+						}
+						
+						String xm = arguments[1].trim();
+						String ym = arguments[2].trim();
+					
+						grid.addMountain(new Coordinates(xm, ym));
+						break;
+						
 					case("T"):
 						if (grid == null) {
 							throw new ConfigurationException("Grid must be defined before any Treasures.");
 						}
+					
+						if (arguments.length != 4) {
+							throw new ConfigurationException("Wrong number of arguments for Treasure (T) settings (" + arguments.length + " instead of 4)");
+						}
+						
+						String xt = arguments[1].trim();
+						String yt = arguments[2].trim();
+					
+						grid.addTreasure(new Coordinates(xt, yt));
+						break;
+						
 					case("A"):
 						if (grid == null) {
 							throw new ConfigurationException("Grid must be defined before any Adventurers.");
 						}
+					
+						if (arguments.length != 6) {
+							throw new ConfigurationException("Wrong number of arguments for Adventurer (A) settings (" + arguments.length + " instead of 6)");
+						}
+						
+						throw new NotImplementedException();
 				}
 			}
 		} catch (IOException e) {

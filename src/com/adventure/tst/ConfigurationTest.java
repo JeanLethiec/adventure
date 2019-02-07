@@ -26,7 +26,6 @@ public class ConfigurationTest extends TestCase {
 	private static Logger logger = Logger.getLogger(ConfigurationTest.class);
 	
 	private List<String> standardContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA");
-	private List<String> twoAdventurersContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA", "A - Roger - 2 - 3 - N - AAGA");
 	
 	private List<List<String>> badContents = new LinkedList<List<String>>() {{
 		// On Grid
@@ -40,6 +39,8 @@ public class ConfigurationTest extends TestCase {
 		add(Arrays.asList("C - 3 - 4"    , "C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
 		
 		// On Mountains
+		add(Arrays.asList(                 "M - 1 - 1"     , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4"    , "B - 1 - 1"     , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4"    , "M - 1Y - 1"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 1Y"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4"    , "M - 1"         , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
@@ -47,7 +48,8 @@ public class ConfigurationTest extends TestCase {
 		add(Arrays.asList("C - 3 - 4"    , "M - 50 - 1"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 50"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
 
-		// On Treasures.
+		// On Treasures
+		add(Arrays.asList(                                       "T - 0 - 3 - 2"    , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "B - 0 - 3 - 2"    , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0X - 3 - 2"   , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3X - 2"   , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
@@ -58,6 +60,7 @@ public class ConfigurationTest extends TestCase {
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 40 - 2"   , "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
 		
 		// On Adventurers
+		add(Arrays.asList(                                                                         "A - Lara - 1 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "B - Lara - 1 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1X - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1X - S - AADADAGGA"));
@@ -79,6 +82,14 @@ public class ConfigurationTest extends TestCase {
 				logger.debug("OK: " + e.getMessage());
 				continue;
 			}
+		}
+		
+		try {
+			File configFile = generateConfigurationFile(standardContent);
+			ConfigurationParser.parse(configFile);
+		} catch (Exception e) {
+			logger.debug("KO: " + e.getMessage());
+			fail();
 		}
 	}
 	

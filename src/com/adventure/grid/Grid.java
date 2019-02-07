@@ -44,12 +44,12 @@ public class Grid {
 	}
 
 	private void initializeFrames() {
-		logger.debug("Initializing frames creation in grid...");
+		//logger.debug("Initializing frames creation in grid...");
 		int x = 0;
 		while (x < width) {
 			int y = 0;
 			while (y < height) {
-				logger.trace("Working on X" + x + " ; Y" + y);
+				//logger.trace("Working on X" + x + " ; Y" + y);
 				addFrame(new StandardFrame(new Coordinates(x, y)));
 				y++;
 			}
@@ -65,7 +65,7 @@ public class Grid {
 		return width;
 	}
 	
-	public void setHeight(int height) throws ConfigurationException {
+	private void setHeight(int height) throws ConfigurationException {
 		if (height > 0) {
 			this.height = height;
 		} else {
@@ -73,7 +73,7 @@ public class Grid {
 		}
 	}
 	
-	public void setWidth(int width) throws ConfigurationException {
+	private void setWidth(int width) throws ConfigurationException {
 		if (width > 0) {
 			this.width = width;
 		} else {
@@ -85,19 +85,29 @@ public class Grid {
 		return frames;
 	}
 	
-	public void setFrames(List<Frame> frames) {
+	private void setFrames(List<Frame> frames) {
 		this.frames = frames;
 	}
 	
-	public void addFrame(Frame frame) {
+	private void addFrame(Frame frame) {
 		this.frames.add(frame);
 	}
 	
-	public void replaceFrame(Coordinates xy, Frame newFrame) throws Exception {
-		List<Frame> correspondingFrames = this.frames.stream().filter(x -> x.getXy().equals(xy)).collect(Collectors.toList());
+	private void replaceFrame(Coordinates xy, Frame newFrame) throws ConfigurationException {
+		List<Frame> correspondingFrames = getFrames().stream().filter(x -> x.getXy().compareTo(xy) == 0).collect(Collectors.toList());
 		
 		if (correspondingFrames.isEmpty()) {
-			throw new Exception("Trying to replace a non-existent frame: " + xy.toString());
+			throw new ConfigurationException("Trying to replace a non-existent frame: " + xy.toString());
 		}
+	}
+	
+	public void addMountain(Coordinates xy) throws ConfigurationException {
+		MountainFrame mountain = new MountainFrame(xy);
+		replaceFrame(xy, mountain);
+	}
+	
+	public void addTreasure(Coordinates xy) throws ConfigurationException {
+		TreasureFrame treasure = new TreasureFrame(xy);
+		replaceFrame(xy, treasure);
 	}
 }

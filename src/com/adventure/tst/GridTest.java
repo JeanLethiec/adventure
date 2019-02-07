@@ -18,6 +18,6 @@ public class GridTest extends TestCase {
 
 		assertEquals(grid.getHeight(), 4);
 		
-		grid.getFrames();
+		assertEquals(grid.getFrames().size(), 12);
 	}
 }
