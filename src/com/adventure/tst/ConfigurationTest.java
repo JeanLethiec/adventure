@@ -118,6 +118,7 @@ public class ConfigurationTest extends TestCase {
 		assertEquals(1, adventurers.size());
 		assertEquals("Lara", adventurers.get(0).getName());
 		assertEquals("S", adventurers.get(0).getOrientation());
+		assertEquals("2/1", adventurers.get(0).getCoordinates().toString());
 	}
 	
 	public void testGenerateConfigurationFile() throws Exception {		

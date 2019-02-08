@@ -1,6 +1,7 @@
 package com.adventure.grid;
 
 import com.adventure.adventurer.Adventurer;
+import com.adventure.adventurer.ImpossibleMovementException;
 
 public class StandardFrame extends Frame implements Adventurable {
 	
@@ -11,11 +12,16 @@ public class StandardFrame extends Frame implements Adventurable {
 	}
 
 	@Override
-	public void addAdventurer(Adventurer adventurer) throws GridException {
+	public void addAdventurer(Adventurer adventurer) throws GridException, ImpossibleMovementException {
 		if (!hasAdventurer()) {
 			currentAdventurer = adventurer;
+			adventurer.setCoordinates(getCoordinates());
 		} else {
-			throw new GridException("Tried to add an adventurer on a populated frame.");
+			if (getAdventurer() == adventurer) {
+				throw new ImpossibleMovementException("Adventurer " + adventurer.getName() + " stays on position at " + adventurer.getCoordinates());
+			} else {
+				throw new ImpossibleMovementException("Tried to add " + adventurer.getName() + " on a populated frame: " + getCoordinates() + " - " + getAdventurer().getName());
+			}
 		}
 	}
 

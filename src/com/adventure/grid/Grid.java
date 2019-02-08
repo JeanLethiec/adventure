@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
 import com.adventure.adventurer.Adventurer;
+import com.adventure.adventurer.ImpossibleMovementException;
+import com.adventure.adventurer.Adventurer.ActionTypes;
 import com.adventure.configuration.ConfigurationException;
-import com.adventure.configuration.ConfigurationParser;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * 
@@ -16,7 +19,7 @@ import com.adventure.configuration.ConfigurationParser;
  *
  */
 public class Grid {
-	private static Logger logger = Logger.getLogger(ConfigurationParser.class);
+	private static Logger logger = Logger.getLogger(Grid.class);
 	
 	private int width;
 	private int height;
@@ -92,7 +95,7 @@ public class Grid {
 	
 	// TODO: Optimize the retrieval of the frame
 	private Frame getFrame(Coordinates xy) throws GridException {
-		List<Frame> correspondingFrames = getFrames().stream().filter(x -> x.getXy().compareTo(xy) == 0).collect(Collectors.toList());
+		List<Frame> correspondingFrames = getFrames().stream().filter(x -> x.getCoordinates().compareTo(xy) == 0).collect(Collectors.toList());
 		
 		if (correspondingFrames.isEmpty()) {
 			throw new GridException("Trying to access a non-existent frame: " + xy);
@@ -125,12 +128,21 @@ public class Grid {
 		return getFrames().stream().filter(x -> x instanceof TreasureFrame).collect(Collectors.toList()).stream().map(x -> (TreasureFrame) x).collect(Collectors.toList());
 	}
 	
-	public void addAdventurer(Adventurer adventurer, Coordinates xy) throws GridException {	
+	public void addAdventurer(Adventurer adventurer, Coordinates xy) throws GridException, ImpossibleMovementException {	
 		Frame frame = getFrame(xy);
 		if (frame instanceof Adventurable) {
 			((Adventurable) frame).addAdventurer(adventurer);
 		} else {
-			throw new GridException("Cannot add an adventurer on a Mountain frame.");
+			throw new GridException("Cannot add adventurer on a non-adventurable frame.");
+		}
+	}
+	
+	public void moveAdventurer(Adventurer adventurer, Coordinates xy) throws ImpossibleMovementException, GridException {	
+		Frame frame = getFrame(xy);
+		if (frame instanceof Adventurable) {
+			((Adventurable) frame).addAdventurer(adventurer);
+		} else {
+			throw new ImpossibleMovementException("Cannot move adventurer on non-adventurable frame.");
 		}
 	}
 	
@@ -144,5 +156,34 @@ public class Grid {
 	
 	public List<Adventurer> getAdventurers() {
 		return getPopulatedFrames().stream().map(x -> x.getAdventurer()).collect(Collectors.toList());
+	}
+	
+	public void	activateAdventurer(Adventurer adventurer) throws GridException, ImpossibleMovementException {
+		ActionTypes action = adventurer.getCurrentAction();
+		
+		logger.info(adventurer.getName() + " executing action: " + action);
+		switch(action) {
+			case Advance:
+				Coordinates currentCoordinates = adventurer.getCoordinates();
+				Frame currentFrame = getFrame(currentCoordinates);
+				
+				Coordinates nextCoordinates = adventurer.getPotentialNextCoordinates();
+				
+				try {
+					moveAdventurer(adventurer, nextCoordinates);
+				} catch (ImpossibleMovementException e) {
+					logger.info(e.getMessage());
+				}
+				
+				break;
+			case TurnRight:
+				adventurer.turn(action);
+				break;
+			case TurnLeft:
+				adventurer.turn(action);
+				break;
+		}
+		
+		adventurer.popCurrentAction();
 	}
 }

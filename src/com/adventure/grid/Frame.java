@@ -1,17 +1,17 @@
 package com.adventure.grid;
 
 public abstract class Frame {
-	private Coordinates xy;
+	private Coordinates coordinates;
 	
 	public Frame(Coordinates iXY) {
-		xy = iXY;
+		coordinates = iXY;
 	}
 	
-	public Coordinates getXy() {
-		return xy;
+	public Coordinates getCoordinates() {
+		return coordinates;
 	}
 	
-	public void setXy(Coordinates xy) {
-		this.xy = xy;
+	public void setCoordinates(Coordinates xy) {
+		this.coordinates = xy;
 	}
 }

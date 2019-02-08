@@ -3,6 +3,7 @@ package com.adventure.configuration;
 import org.apache.log4j.Logger;
 
 import com.adventure.adventurer.Adventurer;
+import com.adventure.adventurer.ImpossibleMovementException;
 import com.adventure.grid.Coordinates;
 import com.adventure.grid.Grid;
 import com.adventure.grid.GridException;
@@ -19,7 +20,7 @@ public class ConfigurationParser {
 	
 	private static Logger logger = Logger.getLogger(ConfigurationParser.class);
 
-	public static Grid parse(File configFile) throws ConfigurationException, GridException {
+	public static Grid parse(File configFile) throws ConfigurationException, GridException, ImpossibleMovementException {
 		
 		Grid grid = null;
 				
@@ -111,7 +112,7 @@ public class ConfigurationParser {
 						String actions = arguments[5].trim();
 						Adventurer adventurer = new Adventurer(name, orientation, actions);
 						
-						grid.addAdventurer(adventurer, new Coordinates(xa, ya));
+						grid.moveAdventurer(adventurer, new Coordinates(xa, ya));
 						break;
 				}
 			}
