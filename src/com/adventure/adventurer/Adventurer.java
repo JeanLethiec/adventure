@@ -3,6 +3,10 @@ package com.adventure.adventurer;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import com.adventure.adventurer.action.Action;
+import com.adventure.adventurer.action.Advance;
+import com.adventure.adventurer.action.TurnLeft;
+import com.adventure.adventurer.action.TurnRight;
 import com.adventure.configuration.ConfigurationException;
 
 /**
@@ -14,7 +18,7 @@ public class Adventurer {
 	
 	private String name;
 	private String orientation;
-	private LinkedList<String> actions;
+	private LinkedList<Action> actions;
 
 	public Adventurer(String name, String orientation, String actionsString) throws ConfigurationException {
 		setName(name);
@@ -41,26 +45,35 @@ public class Adventurer {
 		this.orientation = orientation;
 	}
 
-	public LinkedList<String> getActions() {
+	public LinkedList<Action> getActions() {
 		return actions;
 	}
 
-	public void setActions(LinkedList<String> actions) {
+	public void setActions(LinkedList<Action> actions) {
 		this.actions = actions;
 	}
 	
 	public void setActions(String actions) throws ConfigurationException {
-		this.actions = new LinkedList<String>();
+		this.actions = new LinkedList<Action>();
 		for (int i = 0; i < actions.length(); i++){
 		    char action = actions.charAt(i);
-		    if (!Arrays.stream(Actions.values()).anyMatch((t) -> t.name().charAt(0) == action)) {
-				throw new ConfigurationException("Action " + action + " is forbidden.");
-			}
-		    this.actions.add(String.valueOf(action));
+		    switch (action) {
+		    	case('A'): 
+		    		this.actions.add(new Advance());
+		    		break;
+		    	case('G'):
+		    		this.actions.add(new TurnLeft());
+		    		break;
+		    	case('D'):
+		    		this.actions.add(new TurnRight());
+		    		break;
+		    	default:
+		    		throw new ConfigurationException("Action " + action + " is forbidden.");
+		    }
 		}
 	}
 	
-	public String getCurrentAction() {
+	public Action getCurrentAction() {
 		return getActions().get(0);
 	}
 	
@@ -69,7 +82,7 @@ public class Adventurer {
 	}
 
 	public void	execute() {
-		String action = getCurrentAction();
+		Action action = getCurrentAction();
 		
 		// TODO: Perform action
 		
