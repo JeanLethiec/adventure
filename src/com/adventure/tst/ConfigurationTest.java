@@ -11,8 +11,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.adventure.adventurer.Adventurer;
 import com.adventure.configuration.ConfigurationException;
 import com.adventure.configuration.ConfigurationParser;
+import com.adventure.grid.Adventurable;
 import com.adventure.grid.Grid;
 import com.adventure.grid.MountainFrame;
 import com.adventure.grid.TreasureFrame;
@@ -101,10 +103,21 @@ public class ConfigurationTest extends TestCase {
 		}
 		
 		List<MountainFrame> mountains = grid.getMountains();
-		assertEquals(mountains.size(), 3);
+		assertEquals(3, mountains.size());
 		
 		List<TreasureFrame> treasures = grid.getTreasures();
-		assertEquals(treasures.size(), 2);
+		assertEquals(2, treasures.size());
+		
+		List<Adventurable> adventurables = grid.getAdventurableFrames();
+		assertEquals(9, adventurables.size());
+		
+		List<Adventurable> populated = grid.getPopulatedFrames();
+		assertEquals(1, populated.size());
+		
+		List<Adventurer> adventurers = grid.getAdventurers();
+		assertEquals(1, adventurers.size());
+		assertEquals("Lara", adventurers.get(0).getName());
+		assertEquals("S", adventurers.get(0).getOrientation());
 	}
 	
 	public void testGenerateConfigurationFile() throws Exception {		
@@ -120,7 +133,7 @@ public class ConfigurationTest extends TestCase {
 		}
 	}
 	
-	public File generateConfigurationFile(List<String> lines) throws ConfigurationException {
+	public static File generateConfigurationFile(List<String> lines) throws ConfigurationException {
 		File configFile = null;
 		try {
 			configFile = File.createTempFile("adventure", ".tmp");

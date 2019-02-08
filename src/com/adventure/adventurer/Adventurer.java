@@ -14,7 +14,7 @@ public class Adventurer {
 	
 	private String name;
 	private String orientation;
-	private LinkedList<Actions> actions;
+	private LinkedList<String> actions;
 
 	public Adventurer(String name, String orientation, String actionsString) throws ConfigurationException {
 		setName(name);
@@ -41,21 +41,38 @@ public class Adventurer {
 		this.orientation = orientation;
 	}
 
-	public LinkedList<Actions> getActions() {
+	public LinkedList<String> getActions() {
 		return actions;
 	}
 
-	public void setActions(LinkedList<Actions> actions) {
+	public void setActions(LinkedList<String> actions) {
 		this.actions = actions;
 	}
 	
 	public void setActions(String actions) throws ConfigurationException {
+		this.actions = new LinkedList<String>();
 		for (int i = 0; i < actions.length(); i++){
 		    char action = actions.charAt(i);
 		    if (!Arrays.stream(Actions.values()).anyMatch((t) -> t.name().charAt(0) == action)) {
 				throw new ConfigurationException("Action " + action + " is forbidden.");
 			}
+		    this.actions.add(String.valueOf(action));
 		}
 	}
+	
+	public String getCurrentAction() {
+		return getActions().get(0);
+	}
+	
+	public void popCurrentAction() {
+		getActions().removeFirst();
+	}
 
+	public void	execute() {
+		String action = getCurrentAction();
+		
+		// TODO: Perform action
+		
+		popCurrentAction();
+	}
 }

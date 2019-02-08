@@ -141,4 +141,8 @@ public class Grid {
 	public List<Adventurable> getPopulatedFrames() {
 		return getAdventurableFrames().stream().filter(x -> x.hasAdventurer()).collect(Collectors.toList());
 	}
+	
+	public List<Adventurer> getAdventurers() {
+		return getPopulatedFrames().stream().map(x -> x.getAdventurer()).collect(Collectors.toList());
+	}
 }
