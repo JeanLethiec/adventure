@@ -1,17 +1,14 @@
 package com.adventure.grid;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.adventure.adventurer.Adventurer;
 
 public interface Adventurable {
-	public default void addAdventurer() {
-		throw new NotImplementedException();
-	}
 	
-	public default void hasAdventurer() {
-		throw new NotImplementedException();
-	}
+	public void addAdventurer(Adventurer adventurer) throws GridException;
 	
-	public default void removeAdventurer() {
-		throw new NotImplementedException();
-	}
+	public boolean hasAdventurer();
+	
+	public void removeAdventurer() throws GridException;
+	
+	public Adventurer getAdventurer();
 }

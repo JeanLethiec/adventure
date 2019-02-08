@@ -7,8 +7,6 @@ import com.adventure.grid.Coordinates;
 import com.adventure.grid.Grid;
 import com.adventure.grid.GridException;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.io.BufferedReader;
 
 import java.io.File;
@@ -35,6 +33,11 @@ public class ConfigurationParser {
 		try {
 			String line;
 			while ((line = reader.readLine()) != null) {
+				if (line.startsWith("#")) {
+					logger.trace("Ignored commented line.");
+					continue;	
+				}
+				
 				String[] arguments = line.split("-");
 				
 				String type = arguments[0].trim();
@@ -88,9 +91,8 @@ public class ConfigurationParser {
 						String xt = arguments[1].trim();
 						String yt = arguments[2].trim();
 						String nb = arguments[3].trim();
-						// TODO: Implement number of treasures
 					
-						grid.addTreasure(new Coordinates(xt, yt));
+						grid.addTreasure(new Coordinates(xt, yt), nb);
 						break;
 						
 					case("A"):

@@ -116,8 +116,8 @@ public class Grid {
 		return getFrames().stream().filter(x -> x instanceof MountainFrame).collect(Collectors.toList()).stream().map(x -> (MountainFrame) x).collect(Collectors.toList());
 	}
 	
-	public void addTreasure(Coordinates xy) throws ConfigurationException, GridException {
-		TreasureFrame treasure = new TreasureFrame(xy);
+	public void addTreasure(Coordinates xy, String nb) throws ConfigurationException, GridException {
+		TreasureFrame treasure = new TreasureFrame(xy, nb);
 		replaceFrame(xy, treasure);
 	}
 	
@@ -128,9 +128,17 @@ public class Grid {
 	public void addAdventurer(Adventurer adventurer, Coordinates xy) throws GridException {	
 		Frame frame = getFrame(xy);
 		if (frame instanceof Adventurable) {
-			((Adventurable) frame).addAdventurer();
+			((Adventurable) frame).addAdventurer(adventurer);
 		} else {
 			throw new GridException("Cannot add an adventurer on a Mountain frame.");
 		}
+	}
+	
+	public List<Adventurable> getAdventurableFrames() {
+		return getFrames().stream().filter(x -> x instanceof Adventurable).collect(Collectors.toList()).stream().map(x -> (Adventurable) x).collect(Collectors.toList());
+	}
+	
+	public List<Adventurable> getPopulatedFrames() {
+		return getAdventurableFrames().stream().filter(x -> x.hasAdventurer()).collect(Collectors.toList());
 	}
 }

@@ -28,7 +28,7 @@ public class ConfigurationTest extends TestCase {
 	
 	private static Logger logger = Logger.getLogger(ConfigurationTest.class);
 	
-	private List<String> standardContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA");
+	private List<String> standardContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA");
 	
 	private List<List<String>> badContents = new LinkedList<List<String>>() {{
 		// On Grid
