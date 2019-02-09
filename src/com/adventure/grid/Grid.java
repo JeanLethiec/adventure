@@ -95,7 +95,6 @@ public class Grid {
 		this.frames = frames;
 	}
 	
-	// TODO: Optimize the retrieval of the frame
 	private Frame getFrame(Coordinates xy) throws GridException {
 		List<Frame> correspondingFrames = getFrames().stream().filter(x -> x.getCoordinates().compareTo(xy) == 0).collect(Collectors.toList());
 		
@@ -140,13 +139,18 @@ public class Grid {
 	}
 	
 	public void moveAdventurer(Adventurer adventurer, Coordinates nextCoordinates) throws ImpossibleMovementException, GridException {	
-		Frame frame = getFrame(nextCoordinates);
+		Frame frame = null;
+		try {
+			frame = getFrame(nextCoordinates);
+		} catch (GridException e) {
+			throw new ImpossibleMovementException("Cannot move adventurer " + adventurer.getName() + " outside of the map.");
+		}
 		if (frame instanceof Adventurable) {
 			Coordinates currentCoordinates = adventurer.getCoordinates(); 
 			((Adventurable) frame).addAdventurer(adventurer);
 			((Adventurable) getFrame(currentCoordinates)).removeAdventurer();
 		} else {
-			throw new ImpossibleMovementException("Cannot move adventurer on non-adventurable frame.");
+			throw new ImpossibleMovementException("Cannot move adventurer " + adventurer.getName() + " on non-adventurable frame.");
 		}
 	}
 	
@@ -162,7 +166,15 @@ public class Grid {
 		return getPopulatedFrames().stream().map(x -> ((Adventurable) x).getAdventurer()).collect(Collectors.toList());
 	}
 	
-	public void	activateAdventurer(Adventurer adventurer) throws GridException, ImpossibleMovementException {
+	public Adventurer getAdventurer(String name) throws GridException {
+		List<Adventurer> matched = getAdventurers().stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList());
+		if (matched.isEmpty()) {
+			throw new GridException("No adventurer found for name: " + name);
+		}
+		return matched.get(0);
+	}
+	
+	public void	activateAdventurer(Adventurer adventurer) throws GridException {
 		ActionTypes action = adventurer.getCurrentAction();
 		
 		logger.info(adventurer.getName() + " executing action: " + action);

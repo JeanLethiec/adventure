@@ -33,7 +33,8 @@ public class ConfigurationTest extends TestCase {
 	private static Logger logger = Logger.getLogger(ConfigurationTest.class);
 	
 	private List<String> standardContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA");
-	
+	private List<String> commentedContent = Arrays.asList("#This is a comment.", "C - 3 - 4", "####", "#C - 2 - 5", "#This is another.");
+
 	private List<List<String>> badContents = new LinkedList<List<String>>() {{
 		// On Grid
 		add(Arrays.asList(                              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
@@ -121,6 +122,18 @@ public class ConfigurationTest extends TestCase {
 		assertEquals("Lara", adventurers.get(0).getName());
 		assertEquals(Orientations.S, adventurers.get(0).getOrientation());
 		assertEquals("2/1", adventurers.get(0).getCoordinates().toString());
+	}
+	
+	public void testCommentedConfigurationParsing() throws Exception {
+		Grid grid = null;
+		try {
+			File configFile = generateConfigurationFile(commentedContent);
+			grid = ConfigurationParser.parse(configFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug("KO: " + e.getMessage());
+			fail();
+		}
 	}
 	
 	public void testGenerateConfigurationFile() throws Exception {		

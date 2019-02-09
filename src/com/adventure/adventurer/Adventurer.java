@@ -138,6 +138,10 @@ public class Adventurer {
 		}
 	}
 	
+	public boolean isActive() {
+		return getCurrentAction() != ActionTypes.Nothing;
+	}
+	
 	public void popCurrentAction() {
 		getActions().removeFirst();
 	}

@@ -11,6 +11,8 @@ import com.adventure.adventurer.Adventurer.ActionTypes;
 import com.adventure.adventurer.Orientations;
 import com.adventure.configuration.ConfigurationParser;
 import com.adventure.grid.Grid;
+import com.adventure.grid.GridException;
+
 import junit.framework.TestCase;
 
 /**
@@ -25,7 +27,8 @@ public class GridTest extends TestCase {
 	private List<String> twoAdventurersContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 0 - 1 - S - AAA", "A - Roger - 0 - 2 - S - AAA");	
 	private List<String> mountainContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 2 - E - AADA");	
 	private List<String> oneActionAdventurerContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 0 - 1 - S - A");
-	
+	private List<String> edgeOfMapContent = Arrays.asList("C - 2 - 2", "A - South - 0 - 1 - S - A", "A - West - 0 - 0 - O - A", "A - East - 1 - 1 - E - A", "A - North - 1 - 0 - N - A");	
+
 	public void testInitializeGrid() throws Exception {
 		Grid grid = new Grid(3, 4);
 		
@@ -47,8 +50,7 @@ public class GridTest extends TestCase {
 			fail();
 		}
 		
-		List<Adventurer> adventurers = grid.getAdventurers();
-		Adventurer adventurer = adventurers.get(0);
+		Adventurer adventurer = grid.getAdventurer("Lara");
 		assertEquals(Adventurer.ActionTypes.Advance, adventurer.getCurrentAction());
 		assertEquals("0/1", adventurer.getCoordinates().toString());
 		assertEquals(Orientations.S, adventurer.getOrientation());
@@ -110,9 +112,8 @@ public class GridTest extends TestCase {
 			fail();
 		}
 		
-		List<Adventurer> adventurers = grid.getAdventurers();
-		Adventurer lara = adventurers.get(0);
-		Adventurer roger = adventurers.get(1);
+		Adventurer lara = grid.getAdventurer("Lara");
+		Adventurer roger = grid.getAdventurer("Roger");
 
 		assertEquals(Adventurer.ActionTypes.Advance, lara.getCurrentAction());
 		assertEquals("0/1", lara.getCoordinates().toString());
@@ -161,8 +162,7 @@ public class GridTest extends TestCase {
 			fail();
 		}
 		
-		List<Adventurer> adventurers = grid.getAdventurers();
-		Adventurer lara = adventurers.get(0);
+		Adventurer lara = grid.getAdventurer("Lara");
 
 		assertEquals(Adventurer.ActionTypes.Advance, lara.getCurrentAction());
 		assertEquals("1/2", lara.getCoordinates().toString());
@@ -200,8 +200,7 @@ public class GridTest extends TestCase {
 			fail();
 		}
 		
-		List<Adventurer> adventurers = grid.getAdventurers();
-		Adventurer lara = adventurers.get(0);
+		Adventurer lara = grid.getAdventurer("Lara");
 
 		assertEquals(Adventurer.ActionTypes.Advance, lara.getCurrentAction());
 		assertEquals("0/1", lara.getCoordinates().toString());
@@ -211,6 +210,33 @@ public class GridTest extends TestCase {
 		assertEquals(ActionTypes.Nothing, lara.getCurrentAction());
 		assertEquals("0/2", lara.getCoordinates().toString());
 		assertEquals(Orientations.S, lara.getOrientation());
+	}
+	
+	public void testAdventurerEdgeOfMap() throws Exception {
+		Grid grid = null;
+		try {
+			File configFile = ConfigurationTest.generateConfigurationFile(edgeOfMapContent);
+			grid = ConfigurationParser.parse(configFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug("KO: " + e.getMessage());
+			fail();
+		}
 		
+		List<Adventurer> adventurers = grid.getAdventurers();
+		Adventurer south = grid.getAdventurer("South");
+		Adventurer west = grid.getAdventurer("West");
+		Adventurer east = grid.getAdventurer("East");
+		Adventurer north = grid.getAdventurer("North");
+
+		grid.activateAdventurer(south);
+		grid.activateAdventurer(west);
+		grid.activateAdventurer(east);
+		grid.activateAdventurer(north);
+		
+		assertEquals("0/1", south.getCoordinates().toString());
+		assertEquals("0/0", west.getCoordinates().toString());
+		assertEquals("1/1", east.getCoordinates().toString());
+		assertEquals("1/0", north.getCoordinates().toString());
 	}
 }
