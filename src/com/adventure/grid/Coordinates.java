@@ -25,9 +25,9 @@ public class Coordinates implements Comparable<Coordinates> {
 		}
 	}
 	
-	public Coordinates(int iX, int iY) {
-		x = iX;
-		y = iY;
+	public Coordinates(int iX, int iY) throws ImpossibleCoordinatesException {
+		setX(iX);
+		setY(iY);
 	}
 	
 	public int getX() {
@@ -38,11 +38,17 @@ public class Coordinates implements Comparable<Coordinates> {
 		return y;
 	}
 	
-	public void setX(int x) {
+	public void setX(int x) throws ImpossibleCoordinatesException {
+		if (x < 0) {
+			throw new ImpossibleCoordinatesException("X cannot be negative.");
+		}
 		this.x = x;
 	}
 	
-	public void setY(int y) {
+	public void setY(int y) throws ImpossibleCoordinatesException {
+		if (y < 0) {
+			throw new ImpossibleCoordinatesException("Y cannot be negative.");
+		}
 		this.y = y;
 	}
 

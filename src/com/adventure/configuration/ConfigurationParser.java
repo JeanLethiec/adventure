@@ -112,7 +112,7 @@ public class ConfigurationParser {
 						String actions = arguments[5].trim();
 						Adventurer adventurer = new Adventurer(name, orientation, actions);
 						
-						grid.moveAdventurer(adventurer, new Coordinates(xa, ya));
+						grid.addAdventurer(adventurer, new Coordinates(xa, ya));
 						break;
 				}
 			}

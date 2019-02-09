@@ -12,9 +12,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.adventure.adventurer.Adventurer;
+import com.adventure.adventurer.Orientations;
 import com.adventure.configuration.ConfigurationException;
 import com.adventure.configuration.ConfigurationParser;
 import com.adventure.grid.Adventurable;
+import com.adventure.grid.Frame;
 import com.adventure.grid.Grid;
 import com.adventure.grid.MountainFrame;
 import com.adventure.grid.TreasureFrame;
@@ -108,16 +110,16 @@ public class ConfigurationTest extends TestCase {
 		List<TreasureFrame> treasures = grid.getTreasures();
 		assertEquals(2, treasures.size());
 		
-		List<Adventurable> adventurables = grid.getAdventurableFrames();
+		List<Frame> adventurables = grid.getAdventurableFrames();
 		assertEquals(9, adventurables.size());
 		
-		List<Adventurable> populated = grid.getPopulatedFrames();
+		List<Frame> populated = grid.getPopulatedFrames();
 		assertEquals(1, populated.size());
 		
 		List<Adventurer> adventurers = grid.getAdventurers();
 		assertEquals(1, adventurers.size());
 		assertEquals("Lara", adventurers.get(0).getName());
-		assertEquals("S", adventurers.get(0).getOrientation());
+		assertEquals(Orientations.S, adventurers.get(0).getOrientation());
 		assertEquals("2/1", adventurers.get(0).getCoordinates().toString());
 	}
 	

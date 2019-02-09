@@ -11,8 +11,6 @@ import com.adventure.adventurer.ImpossibleMovementException;
 import com.adventure.adventurer.Adventurer.ActionTypes;
 import com.adventure.configuration.ConfigurationException;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 /**
  * 
  * @author JLC2
@@ -44,10 +42,14 @@ public class Grid {
 			throw new ConfigurationException("Bad value in coordinates for Height: " + iHeight);
 		}
 		
-		initializeFrames();
+		try {
+			initializeFrames();
+		} catch (ImpossibleCoordinatesException e) {
+			throw new ConfigurationException("Programmation exception: Coordinates should not be negative at this point.");
+		}
 	}
 
-	private void initializeFrames() {
+	private void initializeFrames() throws ImpossibleCoordinatesException {
 		//logger.debug("Initializing frames creation in grid...");
 		int x = 0;
 		while (x < width) {
@@ -137,25 +139,27 @@ public class Grid {
 		}
 	}
 	
-	public void moveAdventurer(Adventurer adventurer, Coordinates xy) throws ImpossibleMovementException, GridException {	
-		Frame frame = getFrame(xy);
+	public void moveAdventurer(Adventurer adventurer, Coordinates nextCoordinates) throws ImpossibleMovementException, GridException {	
+		Frame frame = getFrame(nextCoordinates);
 		if (frame instanceof Adventurable) {
+			Coordinates currentCoordinates = adventurer.getCoordinates(); 
 			((Adventurable) frame).addAdventurer(adventurer);
+			((Adventurable) getFrame(currentCoordinates)).removeAdventurer();
 		} else {
 			throw new ImpossibleMovementException("Cannot move adventurer on non-adventurable frame.");
 		}
 	}
 	
-	public List<Adventurable> getAdventurableFrames() {
-		return getFrames().stream().filter(x -> x instanceof Adventurable).collect(Collectors.toList()).stream().map(x -> (Adventurable) x).collect(Collectors.toList());
+	public List<Frame> getAdventurableFrames() {
+		return getFrames().stream().filter(x -> x instanceof Adventurable).collect(Collectors.toList());
 	}
 	
-	public List<Adventurable> getPopulatedFrames() {
-		return getAdventurableFrames().stream().filter(x -> x.hasAdventurer()).collect(Collectors.toList());
+	public List<Frame> getPopulatedFrames() {
+		return getAdventurableFrames().stream().filter(x -> ((Adventurable) x).hasAdventurer()).collect(Collectors.toList());
 	}
 	
 	public List<Adventurer> getAdventurers() {
-		return getPopulatedFrames().stream().map(x -> x.getAdventurer()).collect(Collectors.toList());
+		return getPopulatedFrames().stream().map(x -> ((Adventurable) x).getAdventurer()).collect(Collectors.toList());
 	}
 	
 	public void	activateAdventurer(Adventurer adventurer) throws GridException, ImpossibleMovementException {
@@ -163,14 +167,13 @@ public class Grid {
 		
 		logger.info(adventurer.getName() + " executing action: " + action);
 		switch(action) {
-			case Advance:
-				Coordinates currentCoordinates = adventurer.getCoordinates();
-				Frame currentFrame = getFrame(currentCoordinates);
-				
-				Coordinates nextCoordinates = adventurer.getPotentialNextCoordinates();
-				
+			case Advance:				
+				Coordinates nextCoordinates;
 				try {
+					nextCoordinates = adventurer.getPotentialNextCoordinates();
 					moveAdventurer(adventurer, nextCoordinates);
+				} catch (ImpossibleCoordinatesException e1) {
+					logger.info("Adventurer is at edge of map: " + e1.getMessage());
 				} catch (ImpossibleMovementException e) {
 					logger.info(e.getMessage());
 				}
@@ -181,6 +184,9 @@ public class Grid {
 				break;
 			case TurnLeft:
 				adventurer.turn(action);
+				break;
+			default:
+				logger.info("Adventurer " + adventurer.getName() + " has no more actions to perform.");
 				break;
 		}
 		

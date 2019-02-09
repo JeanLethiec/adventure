@@ -2,6 +2,7 @@ package com.adventure.adventurer;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -10,6 +11,7 @@ import com.adventure.configuration.ConfigurationException;
 import com.adventure.configuration.ConfigurationParser;
 import com.adventure.grid.Coordinates;
 import com.adventure.grid.GridException;
+import com.adventure.grid.ImpossibleCoordinatesException;
 
 /**
  * 
@@ -23,7 +25,8 @@ public class Adventurer {
 	public enum ActionTypes {
 		TurnLeft,
 		TurnRight,
-		Advance
+		Advance,
+		Nothing
 	}
 	
 	private String name;
@@ -73,7 +76,7 @@ public class Adventurer {
 		return coordinates;
 	}
 	
-	public Coordinates getPotentialNextCoordinates() throws GridException {
+	public Coordinates getPotentialNextCoordinates() throws GridException, ImpossibleCoordinatesException {
 		Coordinates coordinates = getCoordinates();
 		Coordinates nextCoordinates = null;
 		
@@ -83,13 +86,13 @@ public class Adventurer {
 					nextCoordinates = new Coordinates(coordinates.getX(), coordinates.getY() + 1);
 					break;
 				case O:
-					nextCoordinates = new Coordinates(coordinates.getX(), coordinates.getY() - 1);
+					nextCoordinates = new Coordinates(coordinates.getX() - 1, coordinates.getY());
 					break;
 				case N:
 					nextCoordinates = new Coordinates(coordinates.getX(), coordinates.getY() - 1);
 					break;
 				case E:
-					nextCoordinates = new Coordinates(coordinates.getX(), coordinates.getY() + 1);
+					nextCoordinates = new Coordinates(coordinates.getX() + 1, coordinates.getY());
 					break;
 			}
 		} else {
@@ -128,7 +131,11 @@ public class Adventurer {
 	}
 	
 	public ActionTypes getCurrentAction() {
-		return getActions().get(0);
+		try {
+			return getActions().getFirst();
+		} catch (NoSuchElementException e) {
+			return ActionTypes.Nothing;
+		}
 	}
 	
 	public void popCurrentAction() {
@@ -136,41 +143,46 @@ public class Adventurer {
 	}
 
 	public void turn(ActionTypes action) throws GridException {
+		Orientations newOrientation = null;
 		switch(action) {
 			case TurnLeft:
 				switch(getOrientation()) {
 					case S:
-						setOrientation(Orientations.E);
+						newOrientation = Orientations.E;
 						break;
 					case O:
-						setOrientation(Orientations.S);
+						newOrientation = Orientations.S;
 						break;
 					case N:
-						setOrientation(Orientations.O);
+						newOrientation = Orientations.O;
 						break;
 					case E:
-						setOrientation(Orientations.N);
+						newOrientation = Orientations.N;
 						break;
 				}
 				break;
 			case TurnRight:
 				switch(getOrientation()) {
 					case S:
-						setOrientation(Orientations.O);
+						newOrientation = Orientations.O;
 						break;
 					case O:
-						setOrientation(Orientations.N);
+						newOrientation = Orientations.N;
 						break;
 					case N:
-						setOrientation(Orientations.E);
+						newOrientation = Orientations.E;
 						break;
 					case E:
-						setOrientation(Orientations.S);
+						newOrientation = Orientations.S;
 						break;
 				}
 				break;
 			default:
 				throw new GridException("Turning is not compatible with: " + action);
+		}
+		if (newOrientation != null) {
+			logger.debug("New orientation: " + newOrientation);
+			setOrientation(newOrientation);
 		}
 	}
 }
