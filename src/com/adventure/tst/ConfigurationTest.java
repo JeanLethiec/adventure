@@ -15,7 +15,6 @@ import com.adventure.adventurer.Adventurer;
 import com.adventure.adventurer.Orientations;
 import com.adventure.configuration.ConfigurationException;
 import com.adventure.configuration.ConfigurationParser;
-import com.adventure.grid.Adventurable;
 import com.adventure.grid.Frame;
 import com.adventure.grid.Grid;
 import com.adventure.grid.MountainFrame;

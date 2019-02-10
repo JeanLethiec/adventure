@@ -6,12 +6,15 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.adventure.Adventure;
 import com.adventure.adventurer.Adventurer;
 import com.adventure.adventurer.Adventurer.ActionTypes;
 import com.adventure.adventurer.Orientations;
 import com.adventure.configuration.ConfigurationParser;
+import com.adventure.grid.Coordinates;
 import com.adventure.grid.Grid;
 import com.adventure.grid.GridException;
+import com.adventure.grid.TreasureFrame;
 
 import junit.framework.TestCase;
 
@@ -223,7 +226,6 @@ public class GridTest extends TestCase {
 			fail();
 		}
 		
-		List<Adventurer> adventurers = grid.getAdventurers();
 		Adventurer south = grid.getAdventurer("South");
 		Adventurer west = grid.getAdventurer("West");
 		Adventurer east = grid.getAdventurer("East");
@@ -238,5 +240,134 @@ public class GridTest extends TestCase {
 		assertEquals("0/0", west.getCoordinates().toString());
 		assertEquals("1/1", east.getCoordinates().toString());
 		assertEquals("1/0", north.getCoordinates().toString());
+	}
+	
+	private List<String> treasureContent = Arrays.asList(
+			"C - 3 - 4", 
+			"T - 0 - 3 - 2", 
+			"T - 1 - 3 - 1", 
+			"A - Lara - 0 - 2 - S - ADDADDA", 
+			"A - Roger - 1 - 2 - S - A"
+	);	
+	
+	public void testAdventurerTreasure() throws Exception {
+		Grid grid = null;
+		try {
+			File configFile = ConfigurationTest.generateConfigurationFile(treasureContent);
+			grid = ConfigurationParser.parse(configFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug("KO: " + e.getMessage());
+			fail();
+		}
+		
+		Adventurer lara = grid.getAdventurer("Lara");
+		Adventurer roger = grid.getAdventurer("Roger");
+
+		Adventure.play(grid);
+		
+		assertEquals(2, lara.getTreasures());
+		assertEquals(1, roger.getTreasures());
+
+		List<TreasureFrame> frames = grid.getTreasures();
+		for (TreasureFrame frame: frames) {
+			assertEquals(0, frame.getNbTreasures());
+		}
+		
+		assertEquals(Adventurer.ActionTypes.Nothing, roger.getCurrentAction());
+		assertEquals(Adventurer.ActionTypes.Nothing, lara.getCurrentAction());
+
+	}
+	
+	public void testAdventurerTreasure2() throws Exception {
+		Grid grid = null;
+		try {
+			File configFile = ConfigurationTest.generateConfigurationFile(treasureContent);
+			grid = ConfigurationParser.parse(configFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug("KO: " + e.getMessage());
+			fail();
+		}
+		
+		Adventurer lara = grid.getAdventurer("Lara");
+		Adventurer roger = grid.getAdventurer("Roger");
+
+		assertEquals(Adventurer.ActionTypes.Advance, lara.getCurrentAction());
+		assertEquals("0/2", lara.getCoordinates().toString());
+		assertEquals(Orientations.S, lara.getOrientation());
+		
+		assertEquals(Adventurer.ActionTypes.Advance, roger.getCurrentAction());
+		assertEquals("1/2", roger.getCoordinates().toString());
+		assertEquals(Orientations.S, roger.getOrientation());
+		
+		assertEquals(2, ((TreasureFrame) grid.getFrame(new Coordinates(0, 3))).getNbTreasures());
+		assertEquals(1, ((TreasureFrame) grid.getFrame(new Coordinates(1, 3))).getNbTreasures());
+		
+		grid.activateAdventurer(roger);
+		assertEquals(Adventurer.ActionTypes.Nothing, roger.getCurrentAction());
+		assertEquals("1/3", roger.getCoordinates().toString());
+		assertEquals(Orientations.S, roger.getOrientation());
+		assertEquals(1, roger.getTreasures());
+		assertEquals(0, ((TreasureFrame) grid.getFrame(new Coordinates(1, 3))).getNbTreasures());
+		assertEquals(2, ((TreasureFrame) grid.getFrame(new Coordinates(0, 3))).getNbTreasures());
+
+		grid.activateAdventurer(lara);
+		assertEquals(ActionTypes.TurnRight, lara.getCurrentAction());
+		assertEquals("0/3", lara.getCoordinates().toString());
+		assertEquals(Orientations.S, lara.getOrientation());
+		assertEquals(1, lara.getTreasures());
+		assertEquals(0, ((TreasureFrame) grid.getFrame(new Coordinates(1, 3))).getNbTreasures());
+		assertEquals(1, ((TreasureFrame) grid.getFrame(new Coordinates(0, 3))).getNbTreasures());
+		
+		grid.activateAdventurer(lara);
+		assertEquals(ActionTypes.TurnRight, lara.getCurrentAction());
+		assertEquals("0/3", lara.getCoordinates().toString());
+		assertEquals(Orientations.O, lara.getOrientation());
+		assertEquals(1, lara.getTreasures());
+		assertEquals(0, ((TreasureFrame) grid.getFrame(new Coordinates(1, 3))).getNbTreasures());
+		assertEquals(1, ((TreasureFrame) grid.getFrame(new Coordinates(0, 3))).getNbTreasures());
+		
+		grid.activateAdventurer(lara);
+		assertEquals(ActionTypes.Advance, lara.getCurrentAction());
+		assertEquals("0/3", lara.getCoordinates().toString());
+		assertEquals(Orientations.N, lara.getOrientation());
+		assertEquals(1, lara.getTreasures());
+		assertEquals(0, ((TreasureFrame) grid.getFrame(new Coordinates(1, 3))).getNbTreasures());
+		assertEquals(1, ((TreasureFrame) grid.getFrame(new Coordinates(0, 3))).getNbTreasures());
+		
+		grid.activateAdventurer(lara);
+		assertEquals(ActionTypes.TurnRight, lara.getCurrentAction());
+		assertEquals("0/2", lara.getCoordinates().toString());
+		assertEquals(Orientations.N, lara.getOrientation());
+		assertEquals(1, lara.getTreasures());
+		assertEquals(0, ((TreasureFrame) grid.getFrame(new Coordinates(1, 3))).getNbTreasures());
+		assertEquals(1, ((TreasureFrame) grid.getFrame(new Coordinates(0, 3))).getNbTreasures());
+		
+		grid.activateAdventurer(lara);
+		assertEquals(ActionTypes.TurnRight, lara.getCurrentAction());
+		assertEquals("0/2", lara.getCoordinates().toString());
+		assertEquals(Orientations.E, lara.getOrientation());
+		assertEquals(1, lara.getTreasures());
+		assertEquals(0, ((TreasureFrame) grid.getFrame(new Coordinates(1, 3))).getNbTreasures());
+		assertEquals(1, ((TreasureFrame) grid.getFrame(new Coordinates(0, 3))).getNbTreasures());
+		
+		grid.activateAdventurer(lara);
+		assertEquals(ActionTypes.Advance, lara.getCurrentAction());
+		assertEquals("0/2", lara.getCoordinates().toString());
+		assertEquals(Orientations.S, lara.getOrientation());
+		assertEquals(1, lara.getTreasures());
+		assertEquals(0, ((TreasureFrame) grid.getFrame(new Coordinates(1, 3))).getNbTreasures());
+		assertEquals(1, ((TreasureFrame) grid.getFrame(new Coordinates(0, 3))).getNbTreasures());
+		
+		grid.activateAdventurer(lara);
+		assertEquals(ActionTypes.Nothing, lara.getCurrentAction());
+		assertEquals("0/3", lara.getCoordinates().toString());
+		assertEquals(Orientations.S, lara.getOrientation());
+		assertEquals(2, lara.getTreasures());
+		assertEquals(0, ((TreasureFrame) grid.getFrame(new Coordinates(1, 3))).getNbTreasures());
+		assertEquals(0, ((TreasureFrame) grid.getFrame(new Coordinates(0, 3))).getNbTreasures());
+		
+		assertEquals(1, roger.getTreasures());
 	}
 }

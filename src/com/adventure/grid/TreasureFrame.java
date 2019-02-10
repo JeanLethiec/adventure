@@ -23,6 +23,10 @@ public class TreasureFrame extends StandardFrame implements Adventurable {
 		this.nbTreasures = nbTreasures;
 	}
 	
+	public boolean hasTreasure() {
+		return getNbTreasures() > 0;
+	}
+	
 	public void addTreasure() {
 		this.nbTreasures++;
 	}

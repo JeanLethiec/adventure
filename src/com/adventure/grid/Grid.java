@@ -95,7 +95,7 @@ public class Grid {
 		this.frames = frames;
 	}
 	
-	private Frame getFrame(Coordinates xy) throws GridException {
+	public Frame getFrame(Coordinates xy) throws GridException {
 		List<Frame> correspondingFrames = getFrames().stream().filter(x -> x.getCoordinates().compareTo(xy) == 0).collect(Collectors.toList());
 		
 		if (correspondingFrames.isEmpty()) {
@@ -149,6 +149,9 @@ public class Grid {
 			Coordinates currentCoordinates = adventurer.getCoordinates(); 
 			((Adventurable) frame).addAdventurer(adventurer);
 			((Adventurable) getFrame(currentCoordinates)).removeAdventurer();
+			if (frame instanceof TreasureFrame) {
+				adventurer.grabTreasure((TreasureFrame) frame); 
+			}
 		} else {
 			throw new ImpossibleMovementException("Cannot move adventurer " + adventurer.getName() + " on non-adventurable frame.");
 		}

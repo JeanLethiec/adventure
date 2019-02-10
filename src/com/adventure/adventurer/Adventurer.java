@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
 import com.adventure.configuration.ConfigurationException;
-import com.adventure.configuration.ConfigurationParser;
 import com.adventure.grid.Coordinates;
 import com.adventure.grid.GridException;
 import com.adventure.grid.ImpossibleCoordinatesException;
+import com.adventure.grid.TreasureFrame;
 
 /**
  * 
@@ -33,6 +33,7 @@ public class Adventurer {
 	private Orientations orientation;
 	private LinkedList<ActionTypes> actions;
 	private Coordinates coordinates;
+	private int treasures = 0;
 
 	public Adventurer(String name, String orientation, String actionsString) throws ConfigurationException {
 		setName(name);
@@ -143,7 +144,9 @@ public class Adventurer {
 	}
 	
 	public void popCurrentAction() {
-		getActions().removeFirst();
+		if (isActive()) {
+			getActions().removeFirst();
+		}
 	}
 
 	public void turn(ActionTypes action) throws GridException {
@@ -188,5 +191,20 @@ public class Adventurer {
 			logger.debug("New orientation: " + newOrientation);
 			setOrientation(newOrientation);
 		}
+	}
+	
+	public void grabTreasure(TreasureFrame frame) {
+		if (frame.hasTreasure()) {
+			frame.removeTreasure();
+			setTreasures(getTreasures() + 1);
+		}
+	}
+
+	public int getTreasures() {
+		return treasures;
+	}
+
+	public void setTreasures(int treasures) {
+		this.treasures = treasures;
 	}
 }
