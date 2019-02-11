@@ -35,6 +35,7 @@ public class OutputTest extends TestCase {
 		
 		OutputWriter.write(grid, outputPath);
 		
+		// TODO: Validate output existence and formatting.
 		//assertTrue(Files.);
 	}
 }

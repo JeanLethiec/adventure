@@ -162,7 +162,7 @@ public class Grid {
 	}
 	
 	public List<Adventurer> getAdventurers() {
-		return getPopulatedFrames().stream().map(x -> ((Adventurable) x).getAdventurer()).collect(Collectors.toList()).sorted((o1, o2) -> o1.getOrder() < o2.getOrder());
+		return getPopulatedFrames().stream().map(x -> ((Adventurable) x).getAdventurer()).collect(Collectors.toList());
 	}
 	
 	public Adventurer getAdventurer(String name) throws GridException {
