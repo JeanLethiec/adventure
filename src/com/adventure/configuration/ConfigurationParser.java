@@ -33,6 +33,9 @@ public class ConfigurationParser {
 		
 		try {
 			String line;
+			
+			int orderAdventurer = 0;
+			
 			while ((line = reader.readLine()) != null) {
 				if (line.startsWith("#")) {
 					logger.trace("Ignored commented line.");
@@ -110,7 +113,8 @@ public class ConfigurationParser {
 						String ya = arguments[3].trim();
 						String orientation = arguments[4].trim();
 						String actions = arguments[5].trim();
-						Adventurer adventurer = new Adventurer(name, orientation, actions);
+						Adventurer adventurer = new Adventurer(name, orientation, actions, orderAdventurer);
+						orderAdventurer++;
 						
 						grid.addAdventurer(adventurer, new Coordinates(xa, ya));
 						break;

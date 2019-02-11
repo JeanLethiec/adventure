@@ -8,6 +8,8 @@ import com.adventure.adventurer.ImpossibleMovementException;
 import com.adventure.configuration.ConfigurationParser;
 import com.adventure.grid.Grid;
 import com.adventure.grid.GridException;
+import com.adventure.output.OutputException;
+import com.adventure.output.OutputWriter;
 import com.adventure.configuration.ConfigurationException;
 
 /**
@@ -17,20 +19,24 @@ import com.adventure.configuration.ConfigurationException;
  */
 public class Adventure {
 	
-	public static void main(String[] args) throws ConfigurationException, ConfigurationException, GridException, ImpossibleMovementException {
-		if (args.length != 1) {
-			throw new ConfigurationException("This program expects a single argument: the configuration input file.");
+	public static void main(String[] args) throws ConfigurationException, ConfigurationException, GridException, ImpossibleMovementException, OutputException {
+		try {
+			if (args.length != 1) {
+				throw new ConfigurationException("This program expects a single argument: the configuration input file.");
+			}
+			
+			String configFilePath = args[0];
+			
+			File configFile = new File(configFilePath);
+			
+			Grid grid = ConfigurationParser.parse(configFile);
+			
+			play(grid);
+			
+			OutputWriter.write(grid);
+		} catch (Exception e) {
+			System.out.println("An error occured: " + e.getMessage());
 		}
-		
-		String configFilePath = args[0];
-		
-		File configFile = new File(configFilePath);
-		
-		Grid grid = ConfigurationParser.parse(configFile);
-		
-		play(grid);
-		
-		System.out.println("End of the program.");
 	}
 	
 	public static void play(Grid grid) throws GridException {

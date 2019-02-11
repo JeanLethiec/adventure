@@ -13,7 +13,6 @@ import com.adventure.adventurer.Orientations;
 import com.adventure.configuration.ConfigurationParser;
 import com.adventure.grid.Coordinates;
 import com.adventure.grid.Grid;
-import com.adventure.grid.GridException;
 import com.adventure.grid.TreasureFrame;
 
 import junit.framework.TestCase;

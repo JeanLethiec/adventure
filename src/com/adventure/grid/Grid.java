@@ -91,10 +91,6 @@ public class Grid {
 		return frames;
 	}
 	
-	private void setFrames(List<Frame> frames) {
-		this.frames = frames;
-	}
-	
 	public Frame getFrame(Coordinates xy) throws GridException {
 		List<Frame> correspondingFrames = getFrames().stream().filter(x -> x.getCoordinates().compareTo(xy) == 0).collect(Collectors.toList());
 		
@@ -166,7 +162,7 @@ public class Grid {
 	}
 	
 	public List<Adventurer> getAdventurers() {
-		return getPopulatedFrames().stream().map(x -> ((Adventurable) x).getAdventurer()).collect(Collectors.toList());
+		return getPopulatedFrames().stream().map(x -> ((Adventurable) x).getAdventurer()).collect(Collectors.toList()).sorted((o1, o2) -> o1.getOrder() < o2.getOrder());
 	}
 	
 	public Adventurer getAdventurer(String name) throws GridException {

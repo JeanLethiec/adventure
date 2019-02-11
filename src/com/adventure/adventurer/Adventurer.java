@@ -34,11 +34,13 @@ public class Adventurer {
 	private LinkedList<ActionTypes> actions;
 	private Coordinates coordinates;
 	private int treasures = 0;
+	private int order;
 
-	public Adventurer(String name, String orientation, String actionsString) throws ConfigurationException {
+	public Adventurer(String name, String orientation, String actionsString, int order) throws ConfigurationException {
 		setName(name);
 		setOrientation(orientation);
 		setActions(actionsString);
+		setOrder(order);
 	}
 
 	public String getName() {
@@ -206,5 +208,17 @@ public class Adventurer {
 
 	public void setTreasures(int treasures) {
 		this.treasures = treasures;
+	}
+	
+	public String getRepresentation() {
+		return "A - " + getName() + " - " + getCoordinates().getX() + " - " + getCoordinates().getY() + " - " + getOrientation() + " - " + getTreasures();
+	}
+
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 }

@@ -124,10 +124,9 @@ public class ConfigurationTest extends TestCase {
 	}
 	
 	public void testCommentedConfigurationParsing() throws Exception {
-		Grid grid = null;
 		try {
 			File configFile = generateConfigurationFile(commentedContent);
-			grid = ConfigurationParser.parse(configFile);
+			ConfigurationParser.parse(configFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.debug("KO: " + e.getMessage());

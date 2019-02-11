@@ -34,4 +34,8 @@ public class TreasureFrame extends StandardFrame implements Adventurable {
 	public void removeTreasure() {
 		this.nbTreasures--;
 	}
+	
+	public String getRepresentation() {
+		return "T - " + getCoordinates().getX() + " - " + getCoordinates().getY() + " - " + getNbTreasures();
+	}
 }
