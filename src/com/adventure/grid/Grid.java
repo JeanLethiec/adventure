@@ -1,6 +1,7 @@
 package com.adventure.grid;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -162,7 +163,7 @@ public class Grid {
 	}
 	
 	public List<Adventurer> getAdventurers() {
-		return getPopulatedFrames().stream().map(x -> ((Adventurable) x).getAdventurer()).collect(Collectors.toList());
+		return getPopulatedFrames().stream().map(x -> ((Adventurable) x).getAdventurer()).sorted(Comparator.comparing(Adventurer::getOrder)).collect(Collectors.toList());
 	}
 	
 	public Adventurer getAdventurer(String name) throws GridException {

@@ -22,14 +22,15 @@ import junit.framework.TestCase;
  * @author JLC2
  *
  */
-public class GridTest extends TestCase {
-	private static Logger logger = Logger.getLogger(GridTest.class);
+public class AdventureTest extends TestCase {
+	private static Logger logger = Logger.getLogger(AdventureTest.class);
 
 	private List<String> standardContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 0 - 1 - S - AADADADAGDAGGA");	
 	private List<String> twoAdventurersContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 0 - 1 - S - AAA", "A - Roger - 0 - 2 - S - AAA");	
 	private List<String> mountainContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 2 - E - AADA");	
 	private List<String> oneActionAdventurerContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 0 - 1 - S - A");
 	private List<String> edgeOfMapContent = Arrays.asList("C - 2 - 2", "A - South - 0 - 1 - S - A", "A - West - 0 - 0 - O - A", "A - East - 1 - 1 - E - A", "A - North - 1 - 0 - N - A");	
+	private List<String> multipleAdventurersContent = Arrays.asList("C - 3 - 3", "A - First - 2 - 2 - S - AAA", "A - Second - 0 - 0 - O - AAA", "A - Third - 1 - 1 - E - AAA", "A - Fourth - 1 - 2 - N - AAA");	
 
 	public void testInitializeGrid() throws Exception {
 		Grid grid = new Grid(3, 4);
@@ -369,4 +370,27 @@ public class GridTest extends TestCase {
 		
 		assertEquals(1, roger.getTreasures());
 	}
+	
+	public void testAdventurerOrder() throws Exception {
+		Grid grid = null;
+		try {
+			File configFile = ConfigurationTest.generateConfigurationFile(multipleAdventurersContent);
+			grid = ConfigurationParser.parse(configFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug("KO: " + e.getMessage());
+			fail();
+		}
+		
+		List<Adventurer> adventurers = grid.getAdventurers();
+		assertEquals("First", adventurers.get(0).getName());
+		assertEquals("Second", adventurers.get(1).getName());
+		assertEquals("Third", adventurers.get(2).getName());
+		assertEquals("Fourth", adventurers.get(3).getName());
+	
+		assertEquals(0, adventurers.get(0).getOrder());
+		assertEquals(1, adventurers.get(1).getOrder());
+		assertEquals(2, adventurers.get(2).getOrder());
+		assertEquals(3, adventurers.get(3).getOrder());
+}
 }
