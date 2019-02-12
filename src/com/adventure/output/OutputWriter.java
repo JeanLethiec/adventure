@@ -4,7 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.adventure.adventurer.Adventurer;
 import com.adventure.grid.Grid;
@@ -17,7 +18,7 @@ import com.adventure.grid.frame.TreasureFrame;
  *
  */
 public final class OutputWriter {
-	private static Logger logger = Logger.getLogger(OutputWriter.class);
+	private static Logger logger = LogManager.getLogger(OutputWriter.class);
 
 	public static void write(Grid grid, String path) throws OutputException {
 		try {

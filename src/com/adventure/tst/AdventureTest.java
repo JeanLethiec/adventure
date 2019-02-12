@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.adventure.Adventure;
 import com.adventure.adventurer.Adventurer;
@@ -23,7 +24,7 @@ import junit.framework.TestCase;
  *
  */
 public class AdventureTest extends TestCase {
-	private static Logger logger = Logger.getLogger(AdventureTest.class);
+	private static Logger logger = LogManager.getLogger(AdventureTest.class);
 
 	private List<String> standardContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 0 - 1 - S - AADADADAGDAGGA");	
 	private List<String> twoAdventurersContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 0 - 1 - S - AAA", "A - Roger - 0 - 2 - S - AAA");	

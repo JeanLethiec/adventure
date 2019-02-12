@@ -1,6 +1,7 @@
 package com.adventure.configuration;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.adventure.adventurer.Adventurer;
 import com.adventure.adventurer.ImpossibleMovementException;
@@ -23,7 +24,7 @@ import java.util.Arrays;
  */
 public final class ConfigurationParser {
 	
-	private static Logger logger = Logger.getLogger(ConfigurationParser.class);
+	private static Logger logger = LogManager.getLogger(ConfigurationParser.class);
 
 	public static Grid parse(File configFile) throws ConfigurationException, GridException, ImpossibleMovementException {
 		

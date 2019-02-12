@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.adventure.configuration.ConfigurationException;
 import com.adventure.grid.GridException;
 import com.adventure.grid.coordinates.Coordinates;
@@ -20,7 +20,7 @@ import com.adventure.grid.frame.TreasureFrame;
  */
 public class Adventurer {
 	
-	private static Logger logger = Logger.getLogger(Adventurer.class);
+	private static Logger logger = LogManager.getLogger(Adventurer.class);
 
 	public enum ActionTypes {
 		TurnLeft,

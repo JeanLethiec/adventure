@@ -9,7 +9,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.adventure.adventurer.Adventurer;
 import com.adventure.adventurer.Orientations;
@@ -29,7 +30,7 @@ import junit.framework.TestCase;
  */
 public class ConfigurationTest extends TestCase {
 	
-	private static Logger logger = Logger.getLogger(ConfigurationTest.class);
+	private static Logger logger = LogManager.getLogger(ConfigurationTest.class);
 	
 	private List<String> standardContent = Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "M - 2 - 3", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA");
 	private List<String> commentedContent = Arrays.asList("#This is a comment.", "C - 3 - 4", "####", "#C - 2 - 5", "#This is another.");

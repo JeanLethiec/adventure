@@ -5,7 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.adventure.adventurer.Adventurer;
 import com.adventure.adventurer.ImpossibleMovementException;
@@ -25,7 +26,7 @@ import com.adventure.grid.frame.TreasureFrame;
  *
  */
 public class Grid {
-	private static Logger logger = Logger.getLogger(Grid.class);
+	private static Logger logger = LogManager.getLogger(Grid.class);
 	
 	private int width;
 	private int height;

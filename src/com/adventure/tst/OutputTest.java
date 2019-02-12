@@ -8,7 +8,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.adventure.Adventure;
 import com.adventure.configuration.ConfigurationParser;
@@ -23,7 +24,7 @@ import junit.framework.TestCase;
  *
  */
 public class OutputTest extends TestCase {
-	private static Logger logger = Logger.getLogger(OutputTest.class);
+	private static Logger logger = LogManager.getLogger(OutputTest.class);
 
 	private List<String> input = Arrays.asList("C - 3 - 4", "M - 1 - 0", "M - 2 - 1", "T - 0 - 3 - 2", "T - 1 - 3 - 3", "A - Lara - 1 - 1 - S - AADADAGGA");
 	private List<String> expectedOutput = Arrays.asList("C - 3 - 4", "M - 1 - 0", "M - 2 - 1", "T - 1 - 3 - 2", "A - Lara - 0 - 3 - S - 3");
