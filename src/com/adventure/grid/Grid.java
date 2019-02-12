@@ -11,9 +11,16 @@ import com.adventure.adventurer.Adventurer;
 import com.adventure.adventurer.ImpossibleMovementException;
 import com.adventure.adventurer.Adventurer.ActionTypes;
 import com.adventure.configuration.ConfigurationException;
+import com.adventure.grid.coordinates.Coordinates;
+import com.adventure.grid.coordinates.ImpossibleCoordinatesException;
+import com.adventure.grid.frame.Adventurable;
+import com.adventure.grid.frame.Frame;
+import com.adventure.grid.frame.MountainFrame;
+import com.adventure.grid.frame.StandardFrame;
+import com.adventure.grid.frame.TreasureFrame;
 
 /**
- * 
+ * A two-dimensional grid.
  * @author JLC2
  *
  */

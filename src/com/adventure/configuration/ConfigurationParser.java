@@ -4,9 +4,9 @@ import org.apache.log4j.Logger;
 
 import com.adventure.adventurer.Adventurer;
 import com.adventure.adventurer.ImpossibleMovementException;
-import com.adventure.grid.Coordinates;
 import com.adventure.grid.Grid;
 import com.adventure.grid.GridException;
+import com.adventure.grid.coordinates.Coordinates;
 
 import java.io.BufferedReader;
 
@@ -16,7 +16,12 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
 
-public class ConfigurationParser {
+/**
+ * Functions allowing input file parsing to initialize the several components of the program. 
+ * @author Jean
+ *
+ */
+public final class ConfigurationParser {
 	
 	private static Logger logger = Logger.getLogger(ConfigurationParser.class);
 

@@ -1,7 +1,13 @@
-package com.adventure.grid;
+package com.adventure.grid.frame;
 
 import com.adventure.configuration.ConfigurationException;
+import com.adventure.grid.coordinates.Coordinates;
 
+/**
+ * A frame carrying one or many treasures, that Adventurers can cross freely.
+ * @author Jean
+ *
+ */
 public class TreasureFrame extends StandardFrame implements Adventurable {
 	
 	private int nbTreasures;

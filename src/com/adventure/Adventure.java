@@ -13,7 +13,7 @@ import com.adventure.output.OutputWriter;
 import com.adventure.configuration.ConfigurationException;
 
 /**
- * 
+ * The entry point of the program, starting an adventure where adventurers travel through a grid and gather treasures.
  * @author JLC2
  *
  */

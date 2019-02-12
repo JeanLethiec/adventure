@@ -1,8 +1,15 @@
-package com.adventure.grid;
+package com.adventure.grid.frame;
 
 import com.adventure.adventurer.Adventurer;
 import com.adventure.adventurer.ImpossibleMovementException;
+import com.adventure.grid.GridException;
+import com.adventure.grid.coordinates.Coordinates;
 
+/**
+ * A standard frame in the Grid that Adventurers can cross freely.
+ * @author Jean
+ *
+ */
 public class StandardFrame extends Frame implements Adventurable {
 	
 	private Adventurer currentAdventurer = null;

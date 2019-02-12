@@ -15,15 +15,15 @@ import com.adventure.adventurer.Adventurer;
 import com.adventure.adventurer.Orientations;
 import com.adventure.configuration.ConfigurationException;
 import com.adventure.configuration.ConfigurationParser;
-import com.adventure.grid.Frame;
 import com.adventure.grid.Grid;
-import com.adventure.grid.MountainFrame;
-import com.adventure.grid.TreasureFrame;
+import com.adventure.grid.frame.Frame;
+import com.adventure.grid.frame.MountainFrame;
+import com.adventure.grid.frame.TreasureFrame;
 
 import junit.framework.TestCase;
 
 /**
- * 
+ * Tests relative to the input file parsing, and correct initialization of the several components of the program according to these specs.
  * @author JLC2
  *
  */

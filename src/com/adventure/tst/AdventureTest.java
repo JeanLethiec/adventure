@@ -11,14 +11,14 @@ import com.adventure.adventurer.Adventurer;
 import com.adventure.adventurer.Adventurer.ActionTypes;
 import com.adventure.adventurer.Orientations;
 import com.adventure.configuration.ConfigurationParser;
-import com.adventure.grid.Coordinates;
 import com.adventure.grid.Grid;
-import com.adventure.grid.TreasureFrame;
+import com.adventure.grid.coordinates.Coordinates;
+import com.adventure.grid.frame.TreasureFrame;
 
 import junit.framework.TestCase;
 
 /**
- * 
+ * Tests relative to the "business" features of the program.
  * @author JLC2
  *
  */

@@ -8,10 +8,15 @@ import org.apache.log4j.Logger;
 
 import com.adventure.adventurer.Adventurer;
 import com.adventure.grid.Grid;
-import com.adventure.grid.MountainFrame;
-import com.adventure.grid.TreasureFrame;
+import com.adventure.grid.frame.MountainFrame;
+import com.adventure.grid.frame.TreasureFrame;
 
-public class OutputWriter {
+/**
+ * Functions allowing output file writing, presenting the final state of the grid.
+ * @author Jean
+ *
+ */
+public final class OutputWriter {
 	private static Logger logger = Logger.getLogger(OutputWriter.class);
 
 	public static void write(Grid grid, String path) throws OutputException {
@@ -26,7 +31,9 @@ public class OutputWriter {
 			}
 			
 			for (TreasureFrame treasure: grid.getTreasures()) {
-				writer.println(treasure.getRepresentation());
+				if (treasure.hasTreasure()) {
+					writer.println(treasure.getRepresentation());
+				}
 			}
 			
 			for (Adventurer adventurer: grid.getAdventurers()) {

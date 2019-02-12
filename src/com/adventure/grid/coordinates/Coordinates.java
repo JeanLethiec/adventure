@@ -1,9 +1,9 @@
-package com.adventure.grid;
+package com.adventure.grid.coordinates;
 
 import com.adventure.configuration.ConfigurationException;
 
 /**
- * 
+ * A wrapper for (X,Y) coordinates in a grid.
  * @author JLC2
  *
  */

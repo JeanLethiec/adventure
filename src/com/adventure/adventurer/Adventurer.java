@@ -8,13 +8,13 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
 import com.adventure.configuration.ConfigurationException;
-import com.adventure.grid.Coordinates;
 import com.adventure.grid.GridException;
-import com.adventure.grid.ImpossibleCoordinatesException;
-import com.adventure.grid.TreasureFrame;
+import com.adventure.grid.coordinates.Coordinates;
+import com.adventure.grid.coordinates.ImpossibleCoordinatesException;
+import com.adventure.grid.frame.TreasureFrame;
 
 /**
- * 
+ * An adventurer, a character that will travel through the grid to gather treasures.
  * @author JLC2
  *
  */
