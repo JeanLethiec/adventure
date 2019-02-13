@@ -113,7 +113,14 @@ public class Grid {
 	}
 	
 	private void replaceFrame(Coordinates xy, Frame newFrame) throws ConfigurationException, GridException {
-		frames.set(frames.indexOf(getFrame(xy)), newFrame);
+		Frame frame = getFrame(xy);
+		if (frame instanceof MountainFrame) {
+			throw new ConfigurationException("Trying to modify an existing mountain frame.");
+		} else if (frame instanceof TreasureFrame) {
+			throw new ConfigurationException("Trying to modify an existing treasure frame.");
+		} else {
+			frames.set(frames.indexOf(frame), newFrame);
+		}
 	}
 	
 	public void addMountain(Coordinates xy) throws ConfigurationException, GridException {

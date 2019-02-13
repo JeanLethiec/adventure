@@ -46,6 +46,7 @@ public class ConfigurationTest extends TestCase {
 		add(Arrays.asList("C - 3 - 4 - 2",              "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4"    , "C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
 		
+
 		// On Mountains
 		add(Arrays.asList(                 "M - 1 - 1"     , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4"    , "B - 1 - 1"     , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
@@ -55,18 +56,22 @@ public class ConfigurationTest extends TestCase {
 		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 1 - 1" , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4"    , "M - 50 - 1"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 50"    , "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
-
-		// On Treasures
-		add(Arrays.asList(                                       "T - 0 - 3 - 2"    , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "B - 0 - 3 - 2"    , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0X - 3 - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3X - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2X"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3"        , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 40 - 3 - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
-		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 40 - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 1"     , "M - 1 - 1", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4"    , "M - 1 - 1"     , "M - 2 - 2", "T - 1 - 1 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
 		
+		// On Treasures
+		add(Arrays.asList(                                                            "T - 0 - 3 - 2"    , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1"                     , "M - 2 - 2", "B - 0 - 3 - 2"    , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1"                     , "M - 2 - 2", "T - 0X - 3 - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1"                     , "M - 2 - 2", "T - 0 - 3X - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1"                     , "M - 2 - 2", "T - 0 - 3 - 2X"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1"                     , "M - 2 - 2", "T - 0 - 3"        , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1"                     , "M - 2 - 2", "T - 0 - 3 - 2 - 2", "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1"                     , "M - 2 - 2", "T - 40 - 3 - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1"                     , "M - 2 - 2", "T - 0 - 40 - 2"   , "T - 1 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "T - 0 - 3 - 2"    , "M - 0 - 3", "T - 1 - 3 - 1"                     , "A - Lara - 2 - 1 - S - AADADAGGA"));
+		add(Arrays.asList("C - 3 - 4", "M - 1 - 1"                     , "M - 2 - 2", "T - 0 - 3 - 2"    , "T - 0 - 3 - 1", "A - Lara - 2 - 1 - S - AADADAGGA"));
+
 		// On Adventurers
 		add(Arrays.asList(                                                                         "A - Lara - 1 - 2 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 1 - S - AADADAGGA"));
@@ -79,7 +84,7 @@ public class ConfigurationTest extends TestCase {
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 2 - S - AADADAGGA - X"));
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 40 - 2 - S - AADADAGGA"));
 		add(Arrays.asList("C - 3 - 4", "M - 1 - 1", "M - 2 - 2", "T - 0 - 3 - 2", "T - 1 - 3 - 1", "A - Lara - 1 - 40 - S - AADADAGGA"));
-	}};
+}};
 	
 	public void testBadConfigurationParsing() throws Exception {
 		for (List<String> badContent: badContents) {
