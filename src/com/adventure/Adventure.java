@@ -36,6 +36,7 @@ public class Adventure {
 			OutputWriter.write(grid);
 		} catch (Exception e) {
 			System.out.println("An error occured: " + e.getMessage());
+			System.exit(1);
 		}
 	}
 	
